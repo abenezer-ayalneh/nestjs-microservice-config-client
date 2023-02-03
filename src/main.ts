@@ -21,6 +21,7 @@ async function bootstrap() {
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
+      transform: true,
       exceptionFactory: (errors: ValidationError[]) => {
         return errors.map((error) => {
           throw new RpcException({

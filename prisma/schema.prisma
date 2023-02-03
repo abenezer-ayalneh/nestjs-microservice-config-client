@@ -10,8 +10,22 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Application {
+  id            Int             @id @default(autoincrement())
+  name          String
+  version       String          @default("1.0.0")
+  configuration Configuration[]
+
+  @@map("applications")
+}
+
 model Configuration {
-  id Int @default(autoincrement()) @id
-  name String @unique
-  value String
+  id            Int         @id @default(autoincrement())
+  name          String
+  value         String
+  application   Application @relation(fields: [applicationId], references: [id])
+  applicationId Int
+
+  @@unique([name, applicationId])
+  @@map("configurations")
 }

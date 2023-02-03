@@ -6,7 +6,7 @@ import {
   GetConfigurationRequest,
 } from './requests/configuration.request';
 
-@Controller('configuration')
+@Controller()
 export class ConfigurationController {
   constructor(private configurationService: ConfigurationService) {}
 

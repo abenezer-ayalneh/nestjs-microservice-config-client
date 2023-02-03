@@ -13,14 +13,21 @@ export class ConfigurationService {
   async addConfigurationEntry(request: AddConfigurationRequest) {
     try {
       return await this.prisma.configuration.create({
-        data: request,
+        data: {
+          name: request.name,
+          value: request.value,
+          // applicationId: request.applicationId,
+          application: {
+            connect: { id: request.applicationId },
+          },
+        },
       });
     } catch (exception) {
       if (exception instanceof PrismaClientKnownRequestError) {
         switch (exception.code) {
           case 'P2002':
             throw new RpcException({
-              message: 'Entry exists on the system. Try signing in',
+              message: 'Entry exists on the system',
               statusCode: HttpStatus.UNPROCESSABLE_ENTITY,
             });
           default:
@@ -40,11 +47,25 @@ export class ConfigurationService {
 
   async getConfigurationEntry(request: GetConfigurationRequest) {
     try {
-      return await this.prisma.configuration.findUnique({
-        where: {
-          name: request.name,
-        },
-      });
+      let config;
+      if (request.name) {
+        config = await this.prisma.configuration.findUnique({
+          where: {
+            name_applicationId: {
+              name: request.name,
+              applicationId: request.applicationId,
+            },
+          },
+        });
+      } else {
+        config = await this.prisma.configuration.findMany({
+          where: {
+            applicationId: request.applicationId,
+          },
+        });
+      }
+
+      return config;
     } catch (exception) {
       throw new RpcException({
         message: exception.message,
