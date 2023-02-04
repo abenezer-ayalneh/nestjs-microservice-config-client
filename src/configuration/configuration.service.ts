@@ -1,5 +1,6 @@
 import { HttpStatus, Injectable } from '@nestjs/common';
 import { RpcException } from '@nestjs/microservices';
+import { Configuration } from '@prisma/client';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
 import { PrismaService } from 'src/prisma/prisma.service';
 import {
@@ -47,9 +48,9 @@ export class ConfigurationService {
 
   async getConfigurationEntry(request: GetConfigurationRequest) {
     try {
-      let config;
+      let configuration: object = {};
       if (request.name) {
-        config = await this.prisma.configuration.findUnique({
+        configuration = await this.prisma.configuration.findUnique({
           where: {
             name_applicationId: {
               name: request.name,
@@ -58,14 +59,19 @@ export class ConfigurationService {
           },
         });
       } else {
-        config = await this.prisma.configuration.findMany({
-          where: {
-            applicationId: request.applicationId,
-          },
+        const configsFromDb: Configuration[] =
+          await this.prisma.configuration.findMany({
+            where: {
+              applicationId: request.applicationId,
+            },
+          });
+
+        configsFromDb.forEach((config) => {
+          configuration[config.name] = config.value;
         });
       }
 
-      return config;
+      return configuration;
     } catch (exception) {
       throw new RpcException({
         message: exception.message,
