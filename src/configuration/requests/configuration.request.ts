@@ -1,29 +1,28 @@
-import { Optional } from '@nestjs/common';
 import { Type } from 'class-transformer';
 import { IsInt, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 export class AddConfigurationRequest {
-  @IsString({ message: 'Configuration name should be a string' })
-  @IsNotEmpty({ message: 'Configuration name should not be empty' })
+  @IsString({ message: 'validation.CONFIGURATION_NAME_SHOULD_BE_STRING' })
+  @IsNotEmpty({ message: 'validation.CONFIGURATION_NAME_SHOULD_NOT_BE_EMPTY' })
   name: string;
 
-  @IsString({ message: 'Configuration value should be a string' })
-  @IsNotEmpty({ message: 'Configuration value should not be empty' })
+  @IsString({ message: 'validation.CONFIGURATION_VALUE_SHOULD_BE_STRING' })
+  @IsNotEmpty({ message: 'validation.CONFIGURATION_VALUE_SHOULD_NOT_BE_EMPTY' })
   value: string;
 
   @Type(() => Number)
-  @IsInt({ message: 'Application ID must be a number' })
-  @IsNotEmpty({ message: 'Application ID should not be empty' })
+  @IsInt({ message: 'validation.APPLICATION_ID_SHOULD_BE_NUMBER' })
+  @IsNotEmpty({ message: 'validation.APPLICATION_ID_SHOULD_NOT_BE_EMPTY' })
   applicationId: number;
 }
 
 export class GetConfigurationRequest {
   @Type(() => Number)
-  @IsInt({ message: 'Application ID must be a number' })
-  @IsNotEmpty({ message: 'Application ID should not be empty' })
+  @IsInt({ message: 'validation.APPLICATION_ID_SHOULD_BE_NUMBER' })
+  @IsNotEmpty({ message: 'validation.APPLICATION_ID_SHOULD_NOT_BE_EMPTY' })
   applicationId: number;
 
-  @IsString({ message: 'Configuration name should be a string' })
+  @IsString({ message: 'validation.CONFIGURATION_NAME_SHOULD_BE_STRING' })
   @IsOptional()
   name?: string | null | undefined;
 }
