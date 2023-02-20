@@ -30,7 +30,7 @@ message GetConfigurationEntryRequest {
 }
 
 message GetConfigurationEntryReturn {
-  reserved 1;
+  map<string, string> config = 1;
 }
 
 message AddApplicationEntryRequest {
