@@ -5,6 +5,7 @@ export class AddApplicationRequest {
   @IsString()
   name: string;
 
+  @IsNotEmpty()
   @IsString()
   version: string;
 }

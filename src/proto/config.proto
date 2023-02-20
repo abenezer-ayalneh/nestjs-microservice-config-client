@@ -1,0 +1,45 @@
+syntax = "proto3";
+
+import "google/protobuf/struct.proto";
+
+package config;
+
+service ConfigGrpcService {
+  rpc AddConfigurationEntry (AddConfigurationEntryRequst) returns (AddConfigurationEntryReturn) {}
+  rpc GetConfigurationEntry (GetConfigurationEntryRequest) returns (GetConfigurationEntryReturn) {}
+  rpc AddApplicationEntry (AddApplicationEntryRequest) returns (AddApplicationEntryReturn) {}
+}
+
+message AddConfigurationEntryRequst {
+  string name = 1;
+  string value = 2;
+  int32 applicationId = 3;
+}
+
+message AddConfigurationEntryReturn {
+  int32 id = 1;
+  string name = 2;
+  string value = 3;
+  int32 applicationId = 4;
+}
+
+message GetConfigurationEntryRequest {
+  int32 applicationId = 1;
+  string lang = 2;
+  optional string name = 3;
+}
+
+message GetConfigurationEntryReturn {
+  reserved 1;
+}
+
+message AddApplicationEntryRequest {
+  string name = 1;
+  string version = 2;
+}
+
+message AddApplicationEntryReturn {
+  int32 id = 1;
+  string name = 2;
+  string version = 3;
+}

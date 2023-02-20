@@ -1,3 +1,4 @@
+import { Application } from '.prisma/client';
 import { HttpStatus, Injectable } from '@nestjs/common';
 import { RpcException } from '@nestjs/microservices';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
@@ -8,7 +9,9 @@ import { PrismaService } from 'src/prisma/prisma.service';
 export class ApplicationService {
   constructor(private prisma: PrismaService) {}
 
-  async addApplicationEntry(request: AddApplicationRequest) {
+  async addApplicationEntry(
+    request: AddApplicationRequest,
+  ): Promise<Application> {
     try {
       return await this.prisma.application.create({
         data: request,

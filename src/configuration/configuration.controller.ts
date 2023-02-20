@@ -1,5 +1,5 @@
 import { Controller } from '@nestjs/common';
-import { MessagePattern } from '@nestjs/microservices';
+import { GrpcMethod } from '@nestjs/microservices';
 import { ConfigurationService } from './configuration.service';
 import {
   AddConfigurationRequest,
@@ -10,12 +10,12 @@ import {
 export class ConfigurationController {
   constructor(private configurationService: ConfigurationService) {}
 
-  @MessagePattern({ cmd: 'addConfigurationEntry' })
+  @GrpcMethod('ConfigGrpcService', 'AddConfigurationEntry')
   addConfigurationEntry(request: AddConfigurationRequest) {
     return this.configurationService.addConfigurationEntry(request);
   }
 
-  @MessagePattern({ cmd: 'getConfigurationEntry' })
+  @GrpcMethod('ConfigGrpcService', 'GetConfigurationEntry')
   getConfigurationEntry(request: GetConfigurationRequest) {
     return this.configurationService.getConfigurationEntry(request);
   }

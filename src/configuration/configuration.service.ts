@@ -71,7 +71,8 @@ export class ConfigurationService {
         });
       }
 
-      return configuration;
+      console.log(configuration);
+      return { config: { ...configuration } };
     } catch (exception) {
       throw new RpcException({
         message: exception.message,
